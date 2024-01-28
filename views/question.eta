@@ -1,0 +1,50 @@
+<% layout("./layouts/layout.eta") %>
+
+<h1>Question No. <%= it.id %></h1>
+<h2><%= it.question_text %></h2>
+
+
+<h2>Add an Answer Option</h2>
+
+<div class="validation-errors" style="display: flex; flex-direction: column; align-items: center;">
+        <% if (it.validationErrors) { %>
+            <ul>
+                <% Object.keys(it.validationErrors).forEach((attribute) => { %>
+                    <% Object.values(it.validationErrors[attribute]).forEach((err) => { %>
+                        <li><%= err %></li>
+                    <% }); %>
+                <% }); %>
+            </ul>
+        <% } %>
+    </div>
+
+<form method="POST" action="/topics/<%= it.topicId %>/questions/<%= it.id %>/options" class="form-options-container">
+        <div class="form-options-group">
+            <label for="option_text">Option Text:</label>
+            <textarea name="option_text" class="form-control" id="option_text"><%= it.optionText ? it.optionText : '' %></textarea>
+        </div>
+        <div class="form-options-group">
+            <label for="is_correct">Is Correct:</label>
+            <input type="checkbox" name="is_correct" id="is_correct" class="checkbox-label">
+        </div>
+        <button type="submit" class="btn btn-primary">Add</button>
+    </form>
+
+<h2>Option Details</h2>
+<div class="options-container">
+        <% if (it.details && it.details.length > 0) { %>
+            <% it.details.forEach(item => { %>
+                <p class="options-form">
+                    <form action="/topics/<%= it.topicId %>/questions/<%= it.id %>/options/<%= item.id %>/delete" method="POST">
+                        Content: <%= item.option_text %>; Correctness: <%= item.is_correct %>
+                        <input type="submit" value="Delete Option" class="btn btn-danger">
+                    </form>
+                </p>
+            <% }); %>
+        <% } else { %>
+            <p class="no-options">No Options available. Do you want to delete the question?</p>
+            <form method="POST" action="/topics/<%= it.topicId %>/questions/<%= it.id %>/delete">
+                <input type="submit" value="Delete Question" class="btn btn-danger">
+            </form>
+        <% } %>
+    </div>

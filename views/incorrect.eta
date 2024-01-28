@@ -1,0 +1,15 @@
+<% layout("./layouts/layout.eta") %>
+<h1>Incorrect!</h1>
+
+<h2>The correct option was</h2>
+
+<div class="data-container" style="display: flex; flex-direction: column; align-items: center; justify-content: center; height: 10vh;">
+        <% if (it.data && it.data.length > 0) { %>
+            <% it.data.forEach(item => { %>
+                <%= item %>
+            <% }); %>
+        <% } else { %>
+            <p>The correct options are not specified for the question</p>
+        <% } %>
+    </div>
+<p>Would you like to try <a href="/quiz/<%= it.tid %>">Next question</a> ?</p>

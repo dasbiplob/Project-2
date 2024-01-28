@@ -1,0 +1,48 @@
+<% layout("./layouts/layout.eta") %>
+<h1>Create Topics</h1>
+
+<div style="display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center;">
+        <% if (it.validationErrors) { %>
+            <h2>Add a Topic</h2>
+            <ul style="list-style: none; padding: 0;">
+                <% Object.keys(it.validationErrors).forEach((attribute) => { %>
+                    <% Object.values(it.validationErrors[attribute]).forEach((err) => { %>
+                        <li><%= err %></li>
+                    <% }); %>
+                <% }); %>
+            </ul>
+        <% } %>
+    </div>
+
+<% if (it.isAdmin) { %>
+<form method="POST" action="/topics" class="form-container">
+        <div class="form-group">
+            <label for="name">Name:</label>
+            <input type="text" class="form-control" id="name" name="name" value="<%= it.name ? it.name : '' %>">
+        </div>
+        <button type="submit" class="btn btn-primary">Add</button>
+    </form>
+<% } %>
+
+<h2>List Of Topics</h2>
+
+<% if (it.allTopics && it.allTopics.length > 0) { %>
+<ul>
+<% it.allTopics.forEach(item => { %>
+ <p>
+        <ul>
+            <li class="list-item">
+                <a href="/topics/<%= item.id %>"><%= item.name %></a>
+                <% if (it.isAdmin) { %>
+                    <form action="/topics/<%= item.id %>/delete" method="POST" style="display: inline;">
+                        <input type="submit" value="Delete" class="delete-button">
+                    </form>
+                <% } %>
+            </li>
+        </ul>
+    </p>
+<% }); %>
+</ul>
+<% } else { %>
+<p>No Current Topics</p>
+<% } %>

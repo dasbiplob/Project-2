@@ -1,0 +1,38 @@
+<% layout("./layouts/layout.eta") %>
+<h1>Topic No.<%= it.topicId %></h1>
+
+<h2>Add a Question</h2>
+
+<div style="display: flex; justify-content: center;">
+        <% if (it.validationErrors) { %>
+            <ul style="text-align: center;">
+                <% Object.keys(it.validationErrors).forEach((attribute) => { %>
+                    <% Object.values(it.validationErrors[attribute]).forEach((err) => { %>
+                        <li><%= err %></li>
+                    <% }); %>
+                <% }); %>
+            </ul>
+        <% } %>
+    </div>
+
+<form method="POST" action="/topics/<%= it.topicId %>/questions" class="form-container">
+        <div class="form-group">
+            <label for="question_text">Text:</label>
+            <textarea name="question_text" class="form-control" id="question_text"><%= it.questionText ? it.questionText : '' %></textarea>
+        </div>
+        <button type="submit" class="btn btn-primary">Add</button>
+    </form>
+
+<h2>List Of Topic Questions</h2>
+
+<% if (it.currentTopicQuestions && it.currentTopicQuestions.length > 0) { %>
+<ul class="question-list">
+        <% it.currentTopicQuestions.forEach(item => { %>
+            <li>
+                <a href="/topics/<%= it.topicId %>/questions/<%= item.id %>" class="question-link"><%= item.question_text %></a>
+            </li>
+        <% }); %>
+    </ul>
+<% } else { %>
+<p>No Current Questions</p>
+<% } %>
