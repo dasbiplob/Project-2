@@ -8,7 +8,7 @@ const getTopicsCount = async () => {
     // const result = await sql`SELECT count(id) FROM topics`;
     // return result.rows[0].count;
     const rows = await sql`SELECT COUNT(*) AS count from topics`;
-    return rows[0].count;
+    return result.rows[0].count;
 };
 
 const getTopicsAll = async () => {
